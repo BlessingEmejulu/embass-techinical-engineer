@@ -370,7 +370,7 @@ section {
 .hero {
     height: 100vh;
     min-height: 600px;
-    background-image: url('https://pixabay.com/get/g8e70e48594ef6d6803186ff363a480fa0fd57a83804029cb458cf2a0141ff32f51d533a89b7eb8301f7d1c8e17f3107169f6aa392383521fa4d186f64eba9081_1280.jpg');
+    background-image: url('/assets/header.webp');
     background-size: cover;
     background-position: center;
     display: flex;
