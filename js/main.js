@@ -4,17 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set current year in footer
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
-    // Preloader
-    const preloader = document.getElementById('preloader');
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            preloader.style.opacity = '0';
-            setTimeout(function() {
-                preloader.style.display = 'none';
-            }, 500);
-        }, 1500);
-    });
-
     // Header scroll effect
     const header = document.querySelector('.header');
     window.addEventListener('scroll', function() {
@@ -33,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         hamburger.classList.toggle('active');
         mobileMenu.classList.toggle('active');
         document.body.classList.toggle('no-scroll');
+        hamburger.setAttribute('aria-expanded', mobileMenu.classList.contains('active'));
     });
 
     // Close mobile menu when clicking on links
@@ -42,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             hamburger.classList.remove('active');
             mobileMenu.classList.remove('active');
             document.body.classList.remove('no-scroll');
+            hamburger.setAttribute('aria-expanded', 'false');
         });
     });
 
@@ -56,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 hamburger.classList.remove('active');
                 mobileMenu.classList.remove('active');
                 document.body.classList.remove('no-scroll');
+                hamburger.setAttribute('aria-expanded', 'false');
             }
             
             const targetId = this.getAttribute('href');
@@ -137,6 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // For stat counters
                 if (entry.target.classList.contains('count')) {
                     const finalValue = parseInt(entry.target.getAttribute('data-count'), 10);
+                    const suffix = entry.target.getAttribute('data-suffix') || '';
                     let currentValue = 0;
                     const duration = 2000; // 2 seconds
                     const increment = finalValue / (duration / 20); // Update every 20ms
@@ -144,10 +137,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     const counter = setInterval(() => {
                         currentValue += increment;
                         if (currentValue >= finalValue) {
-                            entry.target.textContent = finalValue;
+                            entry.target.textContent = finalValue.toLocaleString() + suffix;
                             clearInterval(counter);
                         } else {
-                            entry.target.textContent = Math.floor(currentValue);
+                            entry.target.textContent = Math.floor(currentValue).toLocaleString() + suffix;
                         }
                     }, 20);
                 } 
@@ -199,10 +192,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Form would be submitted to server here in a real implementation
-            // For this example, we'll just show a success message
-            showFormMessage('Thank you for your enquiry! We\'ll contact you shortly.', 'success');
-            quoteForm.reset();
+            const serviceName = document.getElementById('service').selectedOptions[0].text;
+            const enquiry = [
+                'Hello Embass Tech, I would like to discuss a project.',
+                '',
+                'Name: ' + name,
+                'Phone: ' + phone,
+                'Service: ' + serviceName,
+                'Project details: ' + message
+            ].join('\n');
+
+            window.location.href = 'https://wa.me/2348097379865?text=' + encodeURIComponent(enquiry);
         });
     }
     
